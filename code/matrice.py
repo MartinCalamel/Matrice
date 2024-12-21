@@ -145,6 +145,57 @@ class Matrice:
         """
         return self.__mul__(scalaire)
     
+    def __getitem__(self,index):
+        """
+        slicing personnalisé pour les matrices
+
+        usage : [ln_start:ln_stop:ln_step,col_start:col_stop,col_step]
+        """
+        indice_slice = [None, None]
+        for i, item in enumerate(index):
+            if isinstance(item, slice):
+                indice_slice[i] = item
+            else:
+                indice_slice[i] = slice(item, item+1, 1)
+        M = self.matrice
+        n = self.dim[0]
+        p = self.dim[1]
+        ind_lines = range(n)[indice_slice[0]]
+        ind_cols = range(p)[indice_slice[1]]
+        sub_array =[[M[i][j] for j in ind_cols] for i in ind_lines]
+        return Matrice(sub_array)
+    
+    def det(self):
+        """
+        fonction pour calculer le determinant de la matrice self
+
+        #output : float
+        """
+        if self.is_carre():
+            det = self._det(self)
+            return det
+        print("erreur Matrice dim")
+    def _det(self, matrice):
+        """
+        fonction recursive pour le calcule du determinant
+        
+        #input : Matrice
+        #output : float
+        """
+        # condition de sortie
+        if matrice.dim == (2,2):
+            return matrice.matrice[0][0]*matrice.matrice[1][1] - matrice.matrice[0][1]*matrice.matrice[1][0]
+        else :
+            det = 0
+            for i in range(matrice.dim[0]):
+                det += matrice.matrice[i][0]*self._det(Matrice(matrice[:i,1:]+matrice[i+1:,1:]))
+            return det
+    def is_carre(self) -> bool:
+        """
+        fonction qui renvoie si une matrice est carré
+        """
+        return self.dim[0] == self.dim[1]
+    
     
 
 
@@ -162,4 +213,13 @@ if __name__ == "__main__":
 
     A1 = Matrice([[1,2],[2,1]])
     B2 = Matrice([[0,1],[1,0]])
+
+    print(A1[1:1,1:1])
+
     print(A1@B2)
+
+    D1 = Matrice([[1, -1], [3, 4]])
+    print(D1.det())
+    D2 = Matrice([[1,2,3],[0,4,5],[0,0,6]])
+    print(D2.det())
+

@@ -2,16 +2,16 @@
 Author: Martin Calamel
 Created: 2024-12-16
 Description: classe matrice pour la gestion de matrice et le calcule matriciel
-TODO: - definition Matrice
-      - Transposée
-      - calcule matriciel
-      - inverse
-      - factorisation
-      - identité
+TODO: - [ OK ] definition Matrice
+      - [ OK ] Transposée
+      - [ OK ] calcule matriciel
+      - [ OK ] inverse
+      - [ OK ] factorisation
+      - [ NO ] identité (changer la definition pour ne pas avoir a définir une matrice pour l'utiliser)
+      - [ OK ] determinant
 """
 import sys
-
-from librosa import blocks_to_samples
+from venv import create
 
 class Matrice:
     def __init__(self, matrice : list):
@@ -93,7 +93,15 @@ class Matrice:
         """
         mat_zero = [[0 for __ in range(m)] for _ in range(n)]
         return mat_zero
-
+    
+    def identity(self,dim: int):
+        """
+        créer la matrice identité de dimension dim x dim
+        """
+        mat = self.create_zero(dim,dim)
+        for i in range(dim):
+            mat[i][i] = 1
+        return Matrice(mat)
     
     def __matmul__(self, matrice_B : 'Matrice') -> 'Matrice':
         """
@@ -230,6 +238,9 @@ if __name__ == "__main__":
     print(A.dim)
     print(A.T)
 
+    I = Matrice([[]]).identity(3)
+    print(I)
+
     A1 = Matrice([[1,2],[2,1]])
     B2 = Matrice([[0,1],[1,0]])
 
@@ -238,7 +249,7 @@ if __name__ == "__main__":
     print(A1@B2)
 
     D1 = Matrice([[1, -1], [3, 4]])
-    print(D1.det())
+    print(D1.det(), "doit retourner 7")
     D2 = Matrice([[1,2,3],[0,4,5],[0,0,6]])
-    print(D2.det())
+    print(D2.det(), "doit retourner 24")
 

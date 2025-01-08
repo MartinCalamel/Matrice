@@ -5,13 +5,12 @@ Description: classe matrice pour la gestion de matrice et le calcule matriciel
 TODO: - [ OK ] definition Matrice
       - [ OK ] Transposée
       - [ OK ] calcule matriciel
-      - [ OK ] inverse
-      - [ OK ] factorisation
+      - [ NO ] inverse
+      - [ NO ] factorisation
       - [ NO ] identité (changer la definition pour ne pas avoir a définir une matrice pour l'utiliser)
       - [ OK ] determinant
 """
 import sys
-from venv import create
 
 class Matrice:
     def __init__(self, matrice : list):
@@ -172,7 +171,7 @@ class Matrice:
         ind_cols = range(p)[indice_slice[1]]
         sub_array =[[M[i][j] for j in ind_cols] for i in ind_lines]
         return Matrice(sub_array)
-    
+
     def select(self, indice: int, mat: 'Matrice'):
         """
         Retourne la matrice sauf la ligne de l'indice et la première colone
@@ -189,9 +188,6 @@ class Matrice:
                 mat_res.append(ligne)
         return Matrice(mat_res)
 
-        
-
-    
     def det(self):
         """
         fonction pour calculer le determinant de la matrice self
@@ -202,6 +198,7 @@ class Matrice:
             det = self._det(self)
             return det
         print("erreur Matrice dim")
+
     def _det(self, matrice):
         """
         fonction recursive pour le calcule du determinant
@@ -217,6 +214,7 @@ class Matrice:
             for i in range(matrice.dim[0]):
                 det += matrice.matrice[i][0]*self._det(self.select(i,matrice))
             return det
+
     def is_carre(self) -> bool:
         """
         fonction qui renvoie si une matrice est carré
